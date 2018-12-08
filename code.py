@@ -108,6 +108,7 @@ class Square (QGraphicsRectItem):
                 CollObj = elem
         #если была коллизия и щелчок был на 2-ом поле и текущий объект был изначально на втором поле
         if CollObj != None and cur_x >= MARGIN + MARGIN2 and self.startX >= MARGIN + MARGIN2:
+            #свопаем
             first_x,first_y = CollObj.pos().x(),CollObj.pos().y()
             second_x,second_y =self.startX,self.startY
             CollObj.setPos(second_x,second_y)
