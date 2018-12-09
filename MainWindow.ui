@@ -30,14 +30,51 @@
     <widget class="QGraphicsView" name="graphicsView"/>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Anime_btn">
+       <property name="text">
+        <string>Anime</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>Anime_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>mainForm</receiver>
+   <slot>AnimeButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>766</x>
+     <y>577</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>772</x>
+     <y>613</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>AnimeButton_clicked()</slot>
+ </slots>
 </ui>
