@@ -3,12 +3,18 @@
 
 import sys
 from PyQt5.QtWidgets import QPushButton, QWidget, QDialog, QApplication, QMainWindow, QGraphicsScene, QGraphicsItem, \
-    QGraphicsRectItem, QGraphicsSceneMouseEvent
-from PyQt5.QtCore import Qt, QMimeData, QPoint, QRect, QSize, QRectF, QSizeF
+    QGraphicsRectItem, QGraphicsSceneMouseEvent,QGraphicsEllipseItem ,QFrame
+from PyQt5.QtCore import Qt, QMimeData, QPoint, QRect, QSize, QRectF, QSizeF ,QPropertyAnimation , QTimeLine , QObject
 from PyQt5.QtGui import QDrag, QImage, QColor
 from PyQt5 import uic
 import random
-
+import winsound
+from PyQt5.QtWidgets import (QApplication, QGraphicsView,
+        QGraphicsPixmapItem, QGraphicsScene)
+from PyQt5.QtGui import QPainter, QPixmap
+from PyQt5.QtCore import (QObject, QPointF,
+        QPropertyAnimation, pyqtProperty)
+import sys
 COLS = 4
 ROWS = 4
 MARGIN = 40
@@ -18,7 +24,8 @@ XYSIDE = 60
 MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 squares = []
-class Square (QGraphicsRectItem):
+
+class Square (QGraphicsRectItem, QObject):
     def __init__(self, sx, sy):
         super().__init__()
         self.image = QImage()
@@ -108,7 +115,7 @@ class Square (QGraphicsRectItem):
                 CollObj = elem
         #если была коллизия и щелчок был на 2-ом поле и текущий объект был изначально на втором поле
         if CollObj != None and cur_x >= MARGIN + MARGIN2 and self.startX >= MARGIN + MARGIN2:
-            #свопаем
+            # свопаем
             first_x,first_y = CollObj.pos().x(),CollObj.pos().y()
             second_x,second_y =self.startX,self.startY
             CollObj.setPos(second_x,second_y)
@@ -120,8 +127,19 @@ class Square (QGraphicsRectItem):
             self.setPos(self.startX, self.startY)
             stop_handle_collision = True
 
+class AnimSquare(QObject):
+    def __init__(self, p_square):
+        super().__init__()
+        self.square = p_square
 
+    def _set_pos(self, pos):
+        self.square.setPos(pos)
 
+    def _set_angle(self, angle):
+        self.square.setRotation(angle)
+
+    pos = pyqtProperty(QPointF, fset=_set_pos)
+    angle = pyqtProperty(float, fset=_set_angle)
 
 #сцена ,на которой всё отрисовывается
 class Scene (QGraphicsScene):
@@ -159,27 +177,43 @@ class MainWnd(QWidget):
     def initUI(self):
         uic.loadUi('MainWindow.ui', self)
 
-        scene = Scene()
+        self.scene = Scene()
         #устанавдиваем сцену
         #графиксвью - это отображение сцены
         #у одной сцены может быть несколько графиксвью
         #например,одна будет иметь поворот 0 градусов ,а дургая 180 (и они будут одновремменно
         #отображать сцену
-        self.graphicsView.setScene(scene)
+        self.graphicsView.setScene(self.scene)
         #добавляем квадратики
         for y in range(COLS):
             for x in range(ROWS):
                 obj = Square(x * XYSIDE, y * XYSIDE)
-                scene.addItem(obj)
+                self.scene.addItem(obj)
                 squares.append(obj)
 
-    def accept(self):
-        pass
+    def AnimeButton_clicked(self):
+        try:
+            '''
+            self.animation = QPropertyAnimation(AnimSquare(squares[0]), b'pos')
+            self.animation.setDuration(10000)
+            self.animation.setStartValue(QPointF(0, 0))
+            self.animation.setKeyValueAt(0.3, QPointF(0, 30))
+            self.animation.setKeyValueAt(0.5, QPointF(0, 60))
+            self.animation.setKeyValueAt(0.8, QPointF(0, 90))
+            self.animation.setEndValue(QPointF(0, 120))
+            self.animation.start()
+            '''
+            self.animation = QPropertyAnimation(AnimSquare(squares[0]), b'angle')
+            self.animation.setDuration(8000)
+            self.animation.setStartValue(-90)
+            self.animation.setKeyValueAt(0.3, -10)
+            self.animation.setKeyValueAt(0.5, 0)
+            self.animation.setKeyValueAt(0.8, 10)
+            self.animation.setEndValue(30)
+            self.animation.start()
 
-    def reject(self):
-        pass
-
-
+        except Exception as e:
+            print(e)
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = MainWnd()
