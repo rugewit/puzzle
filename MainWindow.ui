@@ -45,6 +45,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="shuffle_btn">
+       <property name="text">
+        <string>перемешать</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="Anime_btn">
        <property name="text">
         <string>Anime</string>
