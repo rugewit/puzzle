@@ -15,8 +15,8 @@ from PyQt5.QtGui import QPainter, QPixmap
 from PyQt5.QtCore import (QObject, QPointF,
         QPropertyAnimation, pyqtProperty)
 import sys
-COLS = 4
-ROWS = 4
+COLS = 3
+ROWS = 3
 MARGIN = 40
 #размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
 XYSIDE = 60
@@ -25,10 +25,10 @@ MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 squares = []
 
-class Square (QGraphicsRectItem, QObject):
-    def __init__(self, sx, sy):
+class Square (QGraphicsRectItem):
+    def __init__(self, sx, sy,img_number):
         super().__init__()
-        self.image = QImage()
+        self.image = QImage('numbers/{}.jpg'.format(img_number))
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.setFlag(QGraphicsItem.ItemIsSelectable)
         #задаём его размеры ,первые 2 арга можно игнорировать
@@ -38,14 +38,17 @@ class Square (QGraphicsRectItem, QObject):
         self.startY = sy + MARGIN
         self.setPos(self.startX, self.startY)
         #цвет
+        #self.clr = random.randrange(0xFF000000,0xFFFFFFFF,1000000)
         self.clr = random.randint(0xFF000000, 0xFFFFFFFF)
-    #функция его отрисовки 
+        #self.setTextureImage(self.image)
+    #функция его отрисовки
     def paint(self, painter, option, widget):
         super().paint(painter, option, widget)
         if self.image.isNull():
             #единицы сделаны ,чтобы объеки имел рамку
             painter.fillRect(1, 1, XYSIDE - 1, XYSIDE - 1, QColor(self.clr))
         else:
+            #painter.drawImage(QPoint(0, 0), self.image)
             painter.drawImage(QPoint(1, 1), self.image)
 
     def mousePressEvent(self, event):
@@ -126,7 +129,7 @@ class Square (QGraphicsRectItem, QObject):
             print('возвращаю обратно')
             self.setPos(self.startX, self.startY)
             stop_handle_collision = True
-
+#класс - оболочная ,нужный ,чтобы класс анимаций связать с квадратати
 class AnimSquare(QObject):
     def __init__(self, p_square):
         super().__init__()
@@ -176,7 +179,7 @@ class MainWnd(QWidget):
 
     def initUI(self):
         uic.loadUi('MainWindow.ui', self)
-
+        self.shuffle_btn.clicked.connect(self.get_seq_numbers_img)
         self.scene = Scene()
         #устанавдиваем сцену
         #графиксвью - это отображение сцены
@@ -184,18 +187,37 @@ class MainWnd(QWidget):
         #например,одна будет иметь поворот 0 градусов ,а дургая 180 (и они будут одновремменно
         #отображать сцену
         self.graphicsView.setScene(self.scene)
-        #добавляем квадратики
+        #добавляем квадратики c картиночками
+        self.set_img_numbers(list(range(1,ROWS*COLS+1)))
+
+
+
+    def shuffle(self,n):
+        print('я начинаю мешать')
+        numbers = [i for i in range(1, n + 1)]
+        random.shuffle(numbers)
+        self.set_img_numbers(numbers)
+
+
+    def set_img_numbers(self,numbers):
+        self.scene.clear()
+        squares.clear()
+        u = 0
         for y in range(COLS):
             for x in range(ROWS):
-                obj = Square(x * XYSIDE, y * XYSIDE)
+                elem = numbers[u]
+                numbers.remove(elem)
+                obj = Square(x * XYSIDE, y * XYSIDE,elem)
                 self.scene.addItem(obj)
                 squares.append(obj)
+                u += 1
+
+
 
     def AnimeButton_clicked(self):
         try:
-            '''
             self.animation = QPropertyAnimation(AnimSquare(squares[0]), b'pos')
-            self.animation.setDuration(10000)
+            self.animation.setDuration(200)
             self.animation.setStartValue(QPointF(0, 0))
             self.animation.setKeyValueAt(0.3, QPointF(0, 30))
             self.animation.setKeyValueAt(0.5, QPointF(0, 60))
@@ -211,6 +233,7 @@ class MainWnd(QWidget):
             self.animation.setKeyValueAt(0.8, 10)
             self.animation.setEndValue(30)
             self.animation.start()
+            '''
 
         except Exception as e:
             print(e)
