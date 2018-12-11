@@ -25,6 +25,7 @@ XYSIDE = 60
 MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 squares = []
+qwe=45
 class Square (QGraphicsRectItem):
     def __init__(self, sx, sy,img_number):
         super().__init__()
