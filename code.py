@@ -4,7 +4,8 @@
 import sys
 from PyQt5.QtWidgets import QPushButton, QWidget, QDialog, QApplication, QMainWindow, QGraphicsScene, QGraphicsItem, \
     QGraphicsRectItem, QGraphicsSceneMouseEvent,QGraphicsEllipseItem ,QFrame
-from PyQt5.QtCore import Qt, QMimeData, QPoint, QRect, QSize, QRectF, QSizeF ,QPropertyAnimation , QTimeLine , QObject
+from PyQt5.QtCore import Qt, QMimeData, QPoint, QRect, QSize, QRectF, QSizeF, QPropertyAnimation, QTimeLine, QObject, \
+    QTimer
 from PyQt5.QtGui import QDrag, QImage, QColor
 from PyQt5 import uic
 import random
@@ -24,8 +25,6 @@ XYSIDE = 60
 MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 squares = []
-#привет ,гитхаб
-schwulew = 123
 class Square (QGraphicsRectItem):
     def __init__(self, sx, sy,img_number):
         super().__init__()
@@ -177,22 +176,30 @@ class MainWnd(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+        timer = QTimer()
+
 
     def initUI(self):
         uic.loadUi('MainWindow.ui', self)
-        self.shuffle_btn.clicked.connect(self.shuffle)
-        self.scene = Scene()
         #устанавдиваем сцену
+        self.scene = Scene()
         #графиксвью - это отображение сцены
         #у одной сцены может быть несколько графиксвью
         #например,одна будет иметь поворот 0 градусов ,а дургая 180 (и они будут одновремменно
         #отображать сцену
         self.graphicsView.setScene(self.scene)
         #добавляем квадратики c картиночками
-        #self.set_img_numbers(list(range(1,ROWS*COLS+1,1)))
-        self.shuffle()
+        self.btn_start_game.clicked.connect(self.start_game)
+        self.btn_confirm.clicked.connect(self.confirm)
 
+        self.set_img_numbers(list(range(1,ROWS*COLS+1,1)))
+        #self.shuffle()
 
+    def confirm(self):
+        pass
+
+    def start_game(self):
+        print('нав')
 
     def shuffle(self):
         print('я начинаю мешать')
