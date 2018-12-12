@@ -13,7 +13,7 @@ from PyQt5.QtGui import QPainter, QPixmap
 from PyQt5.QtCore import (QObject, QPointF,
         QPropertyAnimation, pyqtProperty)
 import sys
-
+#qwe
 from PyQt5.uic.properties import QtGui
 from Square import *
 from View import *
