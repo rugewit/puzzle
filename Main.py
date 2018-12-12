@@ -38,7 +38,7 @@ class MainWnd(QWidget):
 
 
     def confirm(self):
-        if self.sec == 0:
+        if self.stopWatch.sec == 0:
             print('вы проиграли')
         else:
             print('вы выиграли')
@@ -46,7 +46,7 @@ class MainWnd(QWidget):
     def start_game(self):
         try:
             self.shuffle()
-            self.start()
+            self.stopWatch.start()
         except Exception as e:
             print(e)
 
