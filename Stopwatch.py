@@ -26,16 +26,18 @@ XYSIDE = 60
 MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 squares = []
-START_TIME = 5
+
 
 
 class Stopwatch():
-    def __init__(self,t,timer,btn_start_game,label_timer):
+    def __init__(self,t,btn_start_game,label_timer):
         self.START_TIME = t
-        self.timer = timer
         self.btn_start_game = btn_start_game
         self.label_timer = label_timer
         self.sec = self.START_TIME
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.counter)
+        self.set_time()
 
     def start(self):
         self.timer.start(1000)
@@ -43,7 +45,7 @@ class Stopwatch():
 
     def reset(self):
         self.timer.stop()
-        self.sec = START_TIME
+        self.sec = self.START_TIME
         self.btn_start_game.setEnabled(True)
         self.set_time()
 

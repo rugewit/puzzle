@@ -26,15 +26,16 @@ XYSIDE = 60
 # это отступ для второго поля
 MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
-squares = []
-START_TIME = 5
+
+START_TIME = 30
 
 class MainWnd(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.squares = []
         initUI(self)
-        self.stopWatch = Stopwatch(START_TIME,self.timer,self.btn_start_game,self.label_timer)
+        self.stopWatch = Stopwatch(START_TIME,self.btn_start_game,self.label_timer)
 
 
     def confirm(self):
@@ -55,24 +56,7 @@ class MainWnd(QWidget):
         print('я начинаю мешать')
         numbers = [i for i in range(1,ROWS*COLS+1,1)]
         random.shuffle(numbers)
-        self.set_img_numbers(numbers)
-
-
-    def set_img_numbers(self,numbers):
-        self.scene.clear()
-        squares.clear()
-        u = 0
-        for y in range(COLS):
-            for x in range(ROWS):
-                obj = Square(x * XYSIDE, y * XYSIDE,numbers[u])
-                self.scene.addItem(obj)
-                squares.append(obj)
-                u += 1
-
-    def set_START_TIME(self,n):
-        START_TIME = n
-
-
+        set_img_numbers(self,numbers)
 
     def AnimeButton_clicked(self):
         try:

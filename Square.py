@@ -13,7 +13,6 @@ from PyQt5.QtGui import QPainter, QPixmap
 from PyQt5.QtCore import (QObject, QPointF,
         QPropertyAnimation, pyqtProperty)
 import sys
-
 from PyQt5.uic.properties import QtGui
 
 COLS = 3
@@ -24,13 +23,10 @@ XYSIDE = 60
 # это отступ для второго поля
 MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
-squares = []
-START_TIME = 5
-
 
 
 class Square (QGraphicsRectItem):
-    def __init__(self, sx, sy,img_number):
+    def __init__(self, sx, sy,img_number,win):
         super().__init__()
         self.image = QImage('numbers/{}.jpg'.format(img_number))
         self.setFlag(QGraphicsItem.ItemIsMovable)
@@ -44,6 +40,7 @@ class Square (QGraphicsRectItem):
         #цвет
         #self.clr = random.randrange(0xFF000000,0xFFFFFFFF,1000000)
         self.clr = random.randint(0xFF000000, 0xFFFFFFFF)
+        self.win = win
         #self.setTextureImage(self.image)
     #функция его отрисовки
     def paint(self, painter, option, widget):
@@ -116,7 +113,7 @@ class Square (QGraphicsRectItem):
         stop_handle_collision = False
         print('***')
         CollObj = None
-        for elem in squares:
+        for elem in self.win.squares:
             #если рассматриваемый объект(elem) не равен текущему(self) и рассматриваемый объект содержит точку щелчка мыши
             if elem != self and QRectF(elem.pos(), QSizeF(XYSIDE, XYSIDE)).contains(QPoint(cur_x,cur_y)):
                 CollObj = elem

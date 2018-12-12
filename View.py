@@ -25,7 +25,7 @@ XYSIDE = 60
 MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 squares = []
-START_TIME = 5
+
 
 
 class Scene (QGraphicsScene):
@@ -59,9 +59,9 @@ def initUI(self):
     uic.loadUi('MainWindow.ui', self)
     #print('u',self.label_timer.text())
     START_TIME = 5
-    self.timer = QTimer()
+
     #self.set_time()
-    self.timer.timeout.connect(self.counter)
+
     #устанавдиваем сцену
     self.scene = Scene()
     #графиксвью - это отображение сцены
@@ -73,43 +73,16 @@ def initUI(self):
     self.btn_start_game.clicked.connect(self.start_game)
     self.btn_confirm.clicked.connect(self.confirm)
 
-    self.set_img_numbers(list(range(1,ROWS*COLS+1,1)))
+    set_img_numbers(self,list(range(1,ROWS*COLS+1,1)))
     #self.shuffle()
 
 def set_img_numbers(self,numbers):
     self.scene.clear()
-    squares.clear()
+    self.squares.clear()
     u = 0
     for y in range(COLS):
         for x in range(ROWS):
-            obj = Square(x * XYSIDE, y * XYSIDE,numbers[u])
+            obj = Square(x * XYSIDE, y * XYSIDE,numbers[u],self)
             self.scene.addItem(obj)
-            squares.append(obj)
+            self.squares.append(obj)
             u += 1
-
-
-
-
-def AnimeButton_clicked(self):
-    try:
-        self.animation = QPropertyAnimation(AnimSquare(squares[0]), b'pos')
-        self.animation.setDuration(200)
-        self.animation.setStartValue(QPointF(0, 0))
-        self.animation.setKeyValueAt(0.3, QPointF(0, 30))
-        self.animation.setKeyValueAt(0.5, QPointF(0, 60))
-        self.animation.setKeyValueAt(0.8, QPointF(0, 90))
-        self.animation.setEndValue(QPointF(0, 120))
-        self.animation.start()
-        '''
-        self.animation = QPropertyAnimation(AnimSquare(squares[0]), b'angle')
-        self.animation.setDuration(8000)
-        self.animation.setStartValue(-90)
-        self.animation.setKeyValueAt(0.3, -10)
-        self.animation.setKeyValueAt(0.5, 0)
-        self.animation.setKeyValueAt(0.8, 10)
-        self.animation.setEndValue(30)
-        self.animation.start()
-        '''
-
-    except Exception as e:
-        print(e)
