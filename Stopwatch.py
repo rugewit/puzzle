@@ -38,10 +38,17 @@ class Stopwatch():
         self.timer = QTimer()
         self.timer.timeout.connect(self.counter)
         self.set_time()
+        self.part_one = False
+        self.part_two = False
 
-    def start(self):
+    def start(self,n):
         self.timer.start(1000)
         self.btn_start_game.setEnabled(False)
+        if n == 1:
+            self.part_one = True
+        else:
+            self.part_one = False
+            self.part_two = True
 
     def reset(self):
         self.timer.stop()
@@ -52,11 +59,21 @@ class Stopwatch():
     def counter(self):
         self.sec -= 1
         self.set_time()
-        if self.sec == 0:
+        if self.sec == 0 and self.part_one:
+            self.reset()
+        elif self.sec == 0 and self.part_two:
             self.reset()
 
     def is_timer_active(self):
         return self.timer.isActive()
+
+    def end_part_one(self):
+        pass
+
+    def end_part_two(self):
+        pass
+
+
 
     def set_time(self):
         #hora = self.sec / 3600

@@ -34,6 +34,7 @@ class MainWnd(QWidget):
     def __init__(self):
         super().__init__()
         self.squares = []
+        self.ans = []
         initUI(self)
         self.stopWatch = Stopwatch(START_TIME,self.btn_start_game,self.label_timer)
 
@@ -42,7 +43,9 @@ class MainWnd(QWidget):
         if self.stopWatch.sec == 0:
             print('вы проиграли')
         else:
-            print('вы выиграли')
+            #обработать
+            pass
+
 
     def start_game(self):
         try:
@@ -56,11 +59,12 @@ class MainWnd(QWidget):
         print('я начинаю мешать')
         numbers = [i for i in range(1,ROWS*COLS+1,1)]
         random.shuffle(numbers)
+        self.ans = numbers
         set_img_numbers(self,numbers)
 
     def AnimeButton_clicked(self):
         try:
-            self.animation = QPropertyAnimation(AnimSquare(squares[0]), b'pos')
+            self.animation = QPropertyAnimation(AnimSquare(self.squares[0]), b'pos')
             self.animation.setDuration(200)
             self.animation.setStartValue(QPointF(0, 0))
             self.animation.setKeyValueAt(0.3, QPointF(0, 30))
