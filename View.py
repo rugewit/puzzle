@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QPushButton, QWidget, QDialog, QApplication, QMainWindow, QGraphicsScene, QGraphicsItem, \
-    QGraphicsRectItem, QGraphicsSceneMouseEvent, QGraphicsEllipseItem, QFrame, QLabel
+    QGraphicsRectItem, QGraphicsSceneMouseEvent, QGraphicsEllipseItem, QFrame, QLabel, QGraphicsTextItem
 from PyQt5.QtCore import Qt, QMimeData, QPoint, QRect, QSize, QRectF, QSizeF, QPropertyAnimation, QTimeLine, QObject, \
     QTimer, QTime
 from PyQt5.QtGui import QDrag, QImage, QColor
@@ -86,3 +86,7 @@ def set_img_numbers(self,numbers):
             self.scene.addItem(obj)
             self.squares.append(obj)
             u += 1
+
+    self.statusText = QGraphicsTextItem("dfklsdfkdfldksflsdkflsdfksdl;fksdl;fksdlfksdlfksdflsdkflkfsdl")
+    self.statusText.setPos(10, 10)
+    self.scene.addItem(self.statusText)

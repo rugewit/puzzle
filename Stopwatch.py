@@ -81,7 +81,7 @@ class Stopwatch():
         segundos = (self.sec % 3600) % 60
         try:
             self.text = '<html><head/><body><p align="center"><span style=" font-size:48pt;">{}</span></p></body></html>'.format("%02d:%02d" % (minutos, segundos))
-            #self.label_timer.setTextFormat("%02d:%02d:%02d" % (hora, minutos, segundos),self.label_timer.textFormat)
+            #self.label_timer.setText("%02d:%02d:%02d" % (hora, minutos, segundos))
             self.label_timer.setText(self.text)
         except Exception as e:
             print(e)

@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QPushButton, QWidget, QDialog, QApplication, QMainWi
     QGraphicsRectItem, QGraphicsSceneMouseEvent, QGraphicsEllipseItem, QFrame, QLabel
 from PyQt5.QtCore import Qt, QMimeData, QPoint, QRect, QSize, QRectF, QSizeF, QPropertyAnimation, QTimeLine, QObject, \
     QTimer, QTime
-from PyQt5.QtGui import QDrag, QImage, QColor
+from PyQt5.QtGui import QDrag, QImage, QColor, QTextOption, QFont
 from PyQt5 import uic
 import random
 import winsound
@@ -42,6 +42,7 @@ class Square (QGraphicsRectItem):
         #self.clr = random.randrange(0xFF000000,0xFFFFFFFF,1000000)
         self.clr = random.randint(0xFF000000, 0xFFFFFFFF)
         self.win = win
+        self.number = img_number
         #self.setTextureImage(self.image)
     #функция его отрисовки
     def paint(self, painter, option, widget):
@@ -50,8 +51,8 @@ class Square (QGraphicsRectItem):
             #единицы сделаны ,чтобы объеки имел рамку
             painter.fillRect(1, 1, XYSIDE - 1, XYSIDE - 1, QColor(self.clr))
         else:
-            #painter.drawImage(QPoint(0, 0), self.image)
-            painter.drawImage(QPoint(1, 1), self.image)
+            painter.setFont(QFont("Arial", 16))
+            painter.drawText(QRectF(1, 1, XYSIDE - 1, XYSIDE - 1), str(self.number), QTextOption(Qt.AlignmentFlag.AlignCenter))
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
