@@ -1,21 +1,4 @@
-import sys
-from PyQt5.QtWidgets import QPushButton, QWidget, QDialog, QApplication, QMainWindow, QGraphicsScene, QGraphicsItem, \
-    QGraphicsRectItem, QGraphicsSceneMouseEvent, QGraphicsEllipseItem, QFrame, QLabel
-from PyQt5.QtCore import Qt, QMimeData, QPoint, QRect, QSize, QRectF, QSizeF, QPropertyAnimation, QTimeLine, QObject, \
-    QTimer, QTime
-from PyQt5.QtGui import QDrag, QImage, QColor, QTransform
-from PyQt5 import uic
-import random
-import winsound
-from PyQt5.QtWidgets import (QApplication, QGraphicsView,
-                             QGraphicsPixmapItem, QGraphicsScene)
-from PyQt5.QtGui import QPainter, QPixmap
-from PyQt5.QtCore import (QObject, QPointF,
-                          QPropertyAnimation, pyqtProperty)
-import sys
-
-from PyQt5.uic.properties import QtGui
-from Square import *
+from PyQt5.QtGui import QTransform
 from Stopwatch import *
 from View import *
 
@@ -29,20 +12,22 @@ MARGIN2 = 400
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 
 
-# qwe
-
-
 class MainWnd(QWidget):
 
     def __init__(self):
         super().__init__()
+        #квадраты на сцене
         self.squares = []
+        #ответ пользователя
         self.ans = []
+        # правильный ответ
         self.true_ans = []
-        self.START_TIME = 10
+        #время на запоминание
+        self.TIME = 10
+        #инициализацият кнопок ,отвёрток ,шестерёнок usw.
         initUI(self)
-        self.stopWatch = Stopwatch(self.START_TIME, self.btn_start_game, self.label_timer,self.label,self)
-
+        self.stopWatch = Stopwatch(self.TIME, self.btn_start_game, self.label_timer,self.label,self)
+    #функция кнопки "подтвердить"
     def confirm(self):
         self.ans = []
         for y in range(0, COLS ):
@@ -51,6 +36,7 @@ class MainWnd(QWidget):
                 x_cord = MARGIN + MARGIN2 + XYSIDE * x + 1
                 #print(x_cord,y_cord)
                 u = -1
+                #если вдруг пустая ячейка в поле...
                 try:
                     u = self.scene.itemAt(x_cord, y_cord, QTransform())
                     index = self.squares.index(u)
@@ -60,29 +46,21 @@ class MainWnd(QWidget):
 
                 self.ans.append(self.squares[index].number)
         if self.ans == self.true_ans:
-            self.label.setStyleSheet("QLabel { background-color : white; color : green; }")
-            self.label.setText('Правильно!')
-            self.label.setStyleSheet("QLabel { background-color : white;}")
+            self.label.setText("<font color='green'>Верно!</font>")
         else:
-            self.label.setStyleSheet("QLabel { background-color : white; color : red; }")
-            self.label.setText('Неверно')
-            self.label.setStyleSheet("QLabel { background-color : white;}")
+            self.label.setText("<font color='red'>Неверно!</font>")
         self.btn_start_game.setEnabled(True)
         self.btn_confirm.setEnabled(False)
 
-
     def start_game(self):
-        self.btn_confirm.setEnabled(True)
         try:
             self.shuffle()
             text2 = 'Запоминайте расположение квадратов'
             self.squares_movable(0)
             for elem in self.squares:
                 print(elem.ItemIsMovable)
-            # statusText_set_text(self,text2)
             self.label.setText(text2)
             self.stopWatch.start(1)
-            #self.stopWatch.timer.stop()
         except Exception as e:
             print(e)
 

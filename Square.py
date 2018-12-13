@@ -1,35 +1,22 @@
-import sys
-from PyQt5.QtWidgets import QPushButton, QWidget, QDialog, QApplication, QMainWindow, QGraphicsScene, QGraphicsItem, \
-    QGraphicsRectItem, QGraphicsSceneMouseEvent, QGraphicsEllipseItem, QFrame, QLabel
-from PyQt5.QtCore import Qt, QMimeData, QPoint, QRect, QSize, QRectF, QSizeF, QPropertyAnimation, QTimeLine, QObject, \
-    QTimer, QTime
-from PyQt5.QtGui import QDrag, QImage, QColor, QTextOption, QFont
-from PyQt5 import uic
+from PyQt5.QtWidgets import  QGraphicsItem, QGraphicsRectItem
+from PyQt5.QtCore import Qt, QPoint,  QRectF, QSizeF
+from PyQt5.QtGui import  QImage,  QTextOption, QFont
 import random
-import winsound
-from PyQt5.QtWidgets import (QApplication, QGraphicsView,
-        QGraphicsPixmapItem, QGraphicsScene)
-from PyQt5.QtGui import QPainter, QPixmap
-from PyQt5.QtCore import (QObject, QPointF,
-        QPropertyAnimation, pyqtProperty)
-import sys
-#qwe
-from PyQt5.uic.properties import QtGui
+from PyQt5.QtCore import (QObject, QPointF,pyqtProperty)
 
 COLS = 3
 ROWS = 3
 MARGIN = 40
-#размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
+#размер квадратика
 XYSIDE = 60
 # это отступ для второго поля
 MARGIN2 = 400
-# квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 
 
+#квадратик
 class Square (QGraphicsRectItem):
     def __init__(self, sx, sy,number,win):
         super().__init__()
-        self.image = QImage('numbers/{}.jpg'.format(number))
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.setFlag(QGraphicsItem.ItemIsSelectable)
         #задаём его размеры ,первые 2 арга можно игнорировать
@@ -39,28 +26,19 @@ class Square (QGraphicsRectItem):
         self.startY = sy + MARGIN
         self.setPos(self.startX, self.startY)
         #цвет
-        #self.clr = random.randrange(0xFF000000,0xFFFFFFFF,1000000)
-        self.clr = random.randint(0xFF000000, 0xFFFFFFFF)
+        #self.clr = random.randint(0xFF000000, 0xFFFFFFFF)
+        #экземляр класса MainWnd
         self.win = win
+        #номер квадратика
         self.number = number
-        #self.setTextureImage(self.image)
     #функция его отрисовки
     def paint(self, painter, option, widget):
         super().paint(painter, option, widget)
-        '''
-                if self.image.isNull():
-            #единицы сделаны ,чтобы объеки имел рамку
-            painter.fillRect(1, 1, XYSIDE - 1, XYSIDE - 1, QColor(self.clr))
-        else:
-        '''
         painter.setFont(QFont("Roboto", 30))
         painter.drawText(QRectF(1, 1, XYSIDE - 1, XYSIDE - 1), str(self.number), QTextOption(Qt.AlignmentFlag.AlignCenter))
 
     def mousePressEvent(self, event):
-
         super().mousePressEvent(event)
-        if self.ItemIsMovable == False:
-            return
         #это параметр ,который регулирует то , будет ли данный объект над другими при перемещении или нет
         #когда мы перемещаем квадратик ,он должен быть над всеми другими ,поэтому ставим 1
         self.start_ZValue = self.zValue()
@@ -71,20 +49,13 @@ class Square (QGraphicsRectItem):
         self.startY = self.pos().y()
 
     def mouseReleaseEvent(self, event):
-
         super().mouseReleaseEvent(event)
-        if self.ItemIsMovable == False:
-            return
-        try:
-            #тк просто получая координаты ивета ,мы получим координаты щелчка мыши относительно квадратика
-            #мы должны их перевести в аболютные координаты
-            scenePt = self.mapToScene(event.pos())
-            cur_x = scenePt.x()
-            cur_y = scenePt.y()
-            #print(scenePt)
-            self.check_pos(cur_x,cur_y)
-        except Exception as e:
-            print(e)
+        #тк просто получая координаты ивета ,мы получим координаты щелчка мыши относительно квадратика
+        #мы должны их перевести в аболютные координаты
+        scenePt = self.mapToScene(event.pos())
+        cur_x = scenePt.x()
+        cur_y = scenePt.y()
+        self.check_pos(cur_x,cur_y)
         #возвращаем начальный зет-параметр ,чтобы ZValue=1 был только у перемещаемого квадрата
         self.setZValue(self.start_ZValue)
 
@@ -121,7 +92,6 @@ class Square (QGraphicsRectItem):
     def handle_collision(self,cur_x,cur_y):
         global stop_handle_collision
         stop_handle_collision = False
-        print('***')
         CollObj = None
         for elem in self.win.squares:
             #если рассматриваемый объект(elem) не равен текущему(self) и рассматриваемый объект содержит точку щелчка мыши
@@ -137,10 +107,9 @@ class Square (QGraphicsRectItem):
             stop_handle_collision = True
         #если была коллизия всё-таки ,но прошлые условия не выполнелись
         elif CollObj != None:
-            print('возвращаю обратно')
             self.setPos(self.startX, self.startY)
             stop_handle_collision = True
-
+# (на будущее)
 class AnimSquare(QObject):
     def __init__(self, p_square):
         super().__init__()

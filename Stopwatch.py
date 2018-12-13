@@ -31,10 +31,10 @@ squares = []
 
 class Stopwatch():
     def __init__(self,t,btn_start_game,label_timer,label,win):
-        self.START_TIME = t
+        self.TIME = t
         self.btn_start_game = btn_start_game
         self.label_timer = label_timer
-        self.sec = self.START_TIME
+        self.sec = self.TIME
         self.timer = QTimer()
         self.timer.timeout.connect(self.counter)
         self.set_time()
@@ -54,7 +54,7 @@ class Stopwatch():
 
     def reset(self):
         self.timer.stop()
-        self.sec = self.START_TIME
+        self.sec = self.TIME
 
         self.set_time()
 
@@ -71,10 +71,11 @@ class Stopwatch():
 
     def end_part_one(self):
         try:
-            self.label.setText('Теперь попробуйте восстановить расположение квадратов')
+            self.label.setText('Теперь попробуйте восстановить расположение квадратов и нажмите на "подтвердить"')
             self.reset()
             set_img_numbers(self.win,list(range(1, ROWS * COLS + 1, 1)))
             self.win.squares_movable(True)
+            self.win.btn_confirm.setEnabled(True)
         except Exception as e:
             print(e)
 
@@ -88,9 +89,5 @@ class Stopwatch():
         #hora = self.sec / 3600
         minutos = (self.sec % 3600) / 60
         segundos = (self.sec % 3600) % 60
-        try:
-            self.text = '<html><head/><body><p align="center"><span style=" font-size:48pt;">{}</span></p></body></html>'.format("%02d:%02d" % (minutos, segundos))
-            #self.label_timer.setText("%02d:%02d:%02d" % (hora, minutos, segundos))
-            self.label_timer.setText(self.text)
-        except Exception as e:
-            print(e)
+        self.text = '<html><head/><body><p align="center"><span style=" font-size:48pt;">{}</span></p></body></html>'.format("%02d:%02d" % (minutos, segundos))
+        self.label_timer.setText(self.text)

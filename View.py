@@ -74,10 +74,11 @@ def initUI(self):
     # добавляем квадратики c картиночками
     self.btn_start_game.clicked.connect(self.start_game)
     self.btn_confirm.clicked.connect(self.confirm)
+    self.btn_confirm.setEnabled(False)
     #self.statusText = QGraphicsTextItem()
     #self.statusText.setPos(0, 7 * MARGIN)
     #self.scene.addItem(self.statusText)
-    text1 = 'После нажатия на кнопку "играем!" у вас будет {} секунд на то ,чтобы запомнить расположение квадратов.'.format(self.START_TIME)
+    text1 = 'После нажатия на кнопку "играем!" у вас будет {} секунд на то ,чтобы запомнить расположение квадратов.'.format(self.TIME)
     #statusText_set_text(self,text1)
     #"<div style=\"\">Center me!</div>"
     self.label = QLabel()
