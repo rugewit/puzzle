@@ -27,9 +27,9 @@ MARGIN2 = 400
 
 
 class Square (QGraphicsRectItem):
-    def __init__(self, sx, sy,img_number,win):
+    def __init__(self, sx, sy,number,win):
         super().__init__()
-        self.image = QImage('numbers/{}.jpg'.format(img_number))
+        self.image = QImage('numbers/{}.jpg'.format(number))
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.setFlag(QGraphicsItem.ItemIsSelectable)
         #задаём его размеры ,первые 2 арга можно игнорировать
@@ -42,17 +42,19 @@ class Square (QGraphicsRectItem):
         #self.clr = random.randrange(0xFF000000,0xFFFFFFFF,1000000)
         self.clr = random.randint(0xFF000000, 0xFFFFFFFF)
         self.win = win
-        self.number = img_number
+        self.number = number
         #self.setTextureImage(self.image)
     #функция его отрисовки
     def paint(self, painter, option, widget):
         super().paint(painter, option, widget)
-        if self.image.isNull():
+        '''
+                if self.image.isNull():
             #единицы сделаны ,чтобы объеки имел рамку
             painter.fillRect(1, 1, XYSIDE - 1, XYSIDE - 1, QColor(self.clr))
         else:
-            painter.setFont(QFont("Arial", 16))
-            painter.drawText(QRectF(1, 1, XYSIDE - 1, XYSIDE - 1), str(self.number), QTextOption(Qt.AlignmentFlag.AlignCenter))
+        '''
+        painter.setFont(QFont("Roboto", 27))
+        painter.drawText(QRectF(1, 1, XYSIDE - 1, XYSIDE - 1), str(self.number), QTextOption(Qt.AlignmentFlag.AlignCenter))
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
