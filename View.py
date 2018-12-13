@@ -47,9 +47,6 @@ class Scene(QGraphicsScene):
     def drawBackground(self, painter, rect):
         try:
             super().drawBackground(painter, rect)
-            # painter.fillRect(self.sceneRect, Qt.GlobalColor.green)
-            # просток так
-            # painter.fillRect(0, 0, 10, 10, Qt.GlobalColor.red)
             # отрисовываем 2 поля
             self.drawSquare(painter, MARGIN, MARGIN)
             self.drawSquare(painter, MARGIN + MARGIN2, MARGIN)
@@ -59,10 +56,6 @@ class Scene(QGraphicsScene):
 
 def initUI(self):
     uic.loadUi('MainWindow.ui', self)
-    # print('u',self.label_timer.text())
-    START_TIME = 5
-
-    # self.set_time()
 
     # устанавдиваем сцену
     self.scene = Scene()
@@ -75,13 +68,9 @@ def initUI(self):
     self.btn_start_game.clicked.connect(self.start_game)
     self.btn_confirm.clicked.connect(self.confirm)
     self.btn_confirm.setEnabled(False)
-    #self.statusText = QGraphicsTextItem()
-    #self.statusText.setPos(0, 7 * MARGIN)
-    #self.scene.addItem(self.statusText)
     text1 = 'После нажатия на кнопку "играем!" у вас будет {} секунд на то ,чтобы запомнить расположение квадратов.'.format(self.TIME)
-    #statusText_set_text(self,text1)
-    #"<div style=\"\">Center me!</div>"
     self.label = QLabel()
+    #автопереносы
     self.label.setWordWrap(True)
     self.label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter | Qt.AlignCenter)
     self.label.setFont(QFont("monospace", 18))
@@ -91,7 +80,7 @@ def initUI(self):
     set_img_numbers(self, list(range(1, ROWS * COLS + 1, 1)))
     # self.shuffle()
 
-
+#установить квадраты с числами
 def set_img_numbers(self, numbers):
     for elem in self.scene.items():
         if type(elem) == Square:
@@ -104,10 +93,4 @@ def set_img_numbers(self, numbers):
             self.scene.addItem(obj)
             self.squares.append(obj)
             u += 1
-
-def statusText_set_text(self,text):
-    html = ' <html><head/><body><p align="center"><span style=" font-size:20pt;">{}</span></p></body></html>'.format(
-        text)
-    # self.statusText.setFont(QFont("Roboto", 30))
-    self.statusText.setHtml(html)
 

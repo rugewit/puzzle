@@ -53,16 +53,14 @@ class MainWnd(QWidget):
         self.btn_confirm.setEnabled(False)
 
     def start_game(self):
-        try:
-            self.shuffle()
-            text2 = 'Запоминайте расположение квадратов'
-            self.squares_movable(0)
-            for elem in self.squares:
-                print(elem.ItemIsMovable)
-            self.label.setText(text2)
-            self.stopWatch.start(1)
-        except Exception as e:
-            print(e)
+        self.shuffle()
+        text2 = 'Запоминайте расположение квадратов'
+        self.squares_movable(0)
+        for elem in self.squares:
+            print(elem.ItemIsMovable)
+        self.label.setText(text2)
+        self.stopWatch.start(1)
+
 
     def shuffle(self):
         print('я начинаю мешать')
@@ -76,7 +74,7 @@ class MainWnd(QWidget):
             elem.setFlag(QGraphicsItem.ItemIsMovable, bool)
             elem.setFlag(QGraphicsItem.ItemIsSelectable, bool)
 
-
+    # заготовка на будущее?
     '''
     def AnimeButton_clicked(self):
         try:
@@ -99,8 +97,6 @@ class MainWnd(QWidget):
             self.animation.start()
             
     '''
-
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
