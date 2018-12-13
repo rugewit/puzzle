@@ -30,7 +30,7 @@ squares = []
 
 
 class Stopwatch():
-    def __init__(self,t,btn_start_game,label_timer):
+    def __init__(self,t,btn_start_game,label_timer,label,win):
         self.START_TIME = t
         self.btn_start_game = btn_start_game
         self.label_timer = label_timer
@@ -40,6 +40,8 @@ class Stopwatch():
         self.set_time()
         self.part_one = False
         self.part_two = False
+        self.label = label
+        self.win = win
 
     def start(self,n):
         self.timer.start(1000)
@@ -53,14 +55,14 @@ class Stopwatch():
     def reset(self):
         self.timer.stop()
         self.sec = self.START_TIME
-        self.btn_start_game.setEnabled(True)
+
         self.set_time()
 
     def counter(self):
         self.sec -= 1
         self.set_time()
         if self.sec == 0 and self.part_one:
-            self.reset()
+            self.end_part_one()
         elif self.sec == 0 and self.part_two:
             self.reset()
 
@@ -68,7 +70,14 @@ class Stopwatch():
         return self.timer.isActive()
 
     def end_part_one(self):
-        pass
+        try:
+            self.label.setText('Теперь попробуйте восстановить расположение квадратов')
+            self.reset()
+            set_img_numbers(self.win,list(range(1, ROWS * COLS + 1, 1)))
+            self.win.squares_movable(True)
+        except Exception as e:
+            print(e)
+
 
     def end_part_two(self):
         pass

@@ -53,11 +53,14 @@ class Square (QGraphicsRectItem):
             painter.fillRect(1, 1, XYSIDE - 1, XYSIDE - 1, QColor(self.clr))
         else:
         '''
-        painter.setFont(QFont("Roboto", 27))
+        painter.setFont(QFont("Roboto", 30))
         painter.drawText(QRectF(1, 1, XYSIDE - 1, XYSIDE - 1), str(self.number), QTextOption(Qt.AlignmentFlag.AlignCenter))
 
     def mousePressEvent(self, event):
+
         super().mousePressEvent(event)
+        if self.ItemIsMovable == False:
+            return
         #это параметр ,который регулирует то , будет ли данный объект над другими при перемещении или нет
         #когда мы перемещаем квадратик ,он должен быть над всеми другими ,поэтому ставим 1
         self.start_ZValue = self.zValue()
@@ -68,7 +71,10 @@ class Square (QGraphicsRectItem):
         self.startY = self.pos().y()
 
     def mouseReleaseEvent(self, event):
+
         super().mouseReleaseEvent(event)
+        if self.ItemIsMovable == False:
+            return
         try:
             #тк просто получая координаты ивета ,мы получим координаты щелчка мыши относительно квадратика
             #мы должны их перевести в аболютные координаты
