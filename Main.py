@@ -2,20 +2,17 @@ from PyQt5.QtGui import QTransform
 from Stopwatch import *
 from View import *
 
-COLS = 3
-ROWS = 3
-MARGIN = 40
-# размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
-XYSIDE = 60
-# это отступ для второго поля
-MARGIN2 = 400
-# квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
-
-
 class MainWnd(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.COLS = 3
+        self.ROWS = 3
+        self.MARGIN = 40
+        # размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
+        self.XYSIDE = 60
+        # это отступ для второго поля
+        self.MARGIN2 = 400
         #квадраты на сцене
         self.squares = []
         #ответ пользователя
@@ -30,10 +27,10 @@ class MainWnd(QWidget):
     #функция кнопки "подтвердить"
     def confirm(self):
         self.ans = []
-        for y in range(0, COLS ):
-            for x in range(0, ROWS):
-                y_cord = MARGIN + XYSIDE * y + 1
-                x_cord = MARGIN + MARGIN2 + XYSIDE * x + 1
+        for y in range(0, self.COLS ):
+            for x in range(0, self.ROWS):
+                y_cord = self.MARGIN + self.XYSIDE * y + 1
+                x_cord = self.MARGIN + self.MARGIN2 + self.XYSIDE * x + 1
                 #print(x_cord,y_cord)
                 u = -1
                 #если вдруг пустая ячейка в поле...
@@ -64,7 +61,7 @@ class MainWnd(QWidget):
 
     def shuffle(self):
         print('я начинаю мешать')
-        numbers = [i for i in range(1, ROWS * COLS + 1, 1)]
+        numbers = [i for i in range(1, self.ROWS * self.COLS + 1, 1)]
         random.shuffle(numbers)
         self.true_ans = numbers
         set_img_numbers(self, numbers)

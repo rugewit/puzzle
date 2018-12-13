@@ -1,15 +1,14 @@
 from View import *
-COLS = 3
-ROWS = 3
-MARGIN = 40
-
-XYSIDE = 60
-# это отступ для второго поля
-MARGIN2 = 400
-
 
 class Stopwatch():
     def __init__(self,t,btn_start_game,label_timer,label,win):
+        self.COLS = win.COLS
+        self.ROWS = win.ROWS
+        self.MARGIN = win.MARGIN
+        # размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
+        self.XYSIDE = win.XYSIDE
+        # это отступ для второго поля
+        self.MARGIN2 = win.MARGIN2
         self.TIME = t
         self.btn_start_game = btn_start_game
         self.label_timer = label_timer
@@ -54,7 +53,7 @@ class Stopwatch():
         try:
             self.label.setText('Теперь попробуйте восстановить расположение квадратов и нажмите на "подтвердить"')
             self.reset()
-            set_img_numbers(self.win,list(range(1, ROWS * COLS + 1, 1)))
+            set_img_numbers(self.win,list(range(1, self.ROWS * self.COLS + 1, 1)))
             self.win.squares_movable(True)
             self.win.btn_confirm.setEnabled(True)
         except Exception as e:

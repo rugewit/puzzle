@@ -17,30 +17,30 @@ import sys
 from PyQt5.uic.properties import QtGui
 from Square import *
 
-COLS = 3
-ROWS = 3
-MARGIN = 40
-# размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
-XYSIDE = 60
-# это отступ для второго поля
-MARGIN2 = 400
 
 
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
 
 
 class Scene(QGraphicsScene):
-    def __init__(self):
+    def __init__(self,win):
         super().__init__()
         self.setSceneRect(0, 0, 700, 500)
+        self.COLS = win.COLS
+        self.ROWS = win.ROWS
+        self.MARGIN = win.MARGIN
+        # размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
+        self.XYSIDE = win.XYSIDE
+        # это отступ для второго поля
+        self.MARGIN2 = win.MARGIN2
 
     # отрисовывать поле
     def drawSquare(self, painter, x0, y0):
         try:
-            for x in range(COLS + 1):
-                painter.drawLine(x0 + x * XYSIDE, y0, x0 + x * XYSIDE, y0 + XYSIDE * ROWS)
-            for y in range(ROWS + 1):
-                painter.drawLine(x0, y0 + y * XYSIDE, x0 + XYSIDE * COLS, y0 + y * XYSIDE)
+            for x in range(self.COLS + 1):
+                painter.drawLine(x0 + x * self.XYSIDE, y0, x0 + x * self.XYSIDE, y0 + self.XYSIDE * self.ROWS)
+            for y in range(self.ROWS + 1):
+                painter.drawLine(x0, y0 + y * self.XYSIDE, x0 + self.XYSIDE * self.COLS, y0 + y * self.XYSIDE)
         except Exception as e:
             print(e)
 
@@ -48,8 +48,8 @@ class Scene(QGraphicsScene):
         try:
             super().drawBackground(painter, rect)
             # отрисовываем 2 поля
-            self.drawSquare(painter, MARGIN, MARGIN)
-            self.drawSquare(painter, MARGIN + MARGIN2, MARGIN)
+            self.drawSquare(painter, self.MARGIN, self.MARGIN)
+            self.drawSquare(painter, self.MARGIN + self.MARGIN2, self.MARGIN)
         except Exception as e:
             print(e)
 
@@ -58,7 +58,7 @@ def initUI(self):
     uic.loadUi('MainWindow.ui', self)
 
     # устанавдиваем сцену
-    self.scene = Scene()
+    self.scene = Scene(self)
     # графиксвью - это отображение сцены
     # у одной сцены может быть несколько графиксвью
     # например,одна будет иметь поворот 0 градусов ,а дургая 180 (и они будут одновремменно
@@ -76,8 +76,8 @@ def initUI(self):
     self.label.setFont(QFont("monospace", 18))
     self.label.setText(text1)
     self.label.setStyleSheet("QLabel { background-color : white}")
-    self.scene.addWidget(self.label).setGeometry(QRectF(50, MARGIN + XYSIDE * ROWS+2, 600, 200))
-    set_img_numbers(self, list(range(1, ROWS * COLS + 1, 1)))
+    self.scene.addWidget(self.label).setGeometry(QRectF(50, self.MARGIN + self.XYSIDE * self.ROWS+2, 600, 200))
+    set_img_numbers(self, list(range(1, self.ROWS * self.COLS + 1, 1)))
     # self.shuffle()
 
 #установить квадраты с числами
@@ -87,9 +87,9 @@ def set_img_numbers(self, numbers):
             self.scene.removeItem(elem)
     self.squares.clear()
     u = 0
-    for y in range(COLS):
-        for x in range(ROWS):
-            obj = Square(x * XYSIDE, y * XYSIDE, numbers[u], self)
+    for y in range(self.COLS):
+        for x in range(self.ROWS):
+            obj = Square(x * self.XYSIDE, y * self.XYSIDE, numbers[u], self)
             self.scene.addItem(obj)
             self.squares.append(obj)
             u += 1
