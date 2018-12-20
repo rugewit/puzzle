@@ -72,6 +72,7 @@ def initUI(self):
     self.label.setText(text1)
     self.label.setStyleSheet("QLabel { background-color : white}")
     self.scene.addWidget(self.label).setGeometry(QRectF(50, settings.MARGIN + settings.XYSIDE * settings.ROWS+2, 600, 200))
+    self.comboBox_size.activated[str].connect(self.onActivated)
     set_img_numbers(self, list(range(1, settings.ROWS * settings.COLS + 1, 1)))
     # self.shuffle()
 

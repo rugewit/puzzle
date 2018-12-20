@@ -46,9 +46,11 @@ class MainWnd(QWidget):
         self.btn_start_game.setEnabled(True)
         self.btn_confirm.setEnabled(False)
         self.btn_change_time.setEnabled(True)
+        self.comboBox_size.setEnabled(True)
 
     def start_game(self):
         self.btn_change_time.setEnabled(False)
+        self.comboBox_size.setEnabled(False)
         print(settings.TIME)
         self.shuffle()
         text2 = 'Запоминайте расположение квадратов'
@@ -60,11 +62,14 @@ class MainWnd(QWidget):
 
 
     def shuffle(self):
-        print('я начинаю мешать')
-        numbers = [i for i in range(1, settings.ROWS * settings.COLS + 1, 1)]
-        random.shuffle(numbers)
-        self.true_ans = numbers
-        set_img_numbers(self, numbers)
+        try:
+            print('я начинаю мешать')
+            numbers = [i for i in range(1, settings.ROWS * settings.COLS + 1, 1)]
+            random.shuffle(numbers)
+            self.true_ans = numbers
+            set_img_numbers(self, numbers)
+        except Exception as e:
+            print(e)
 
     def squares_movable(self,bool):
         for elem in self.squares:
@@ -85,7 +90,15 @@ class MainWnd(QWidget):
             return
         #print(settings.TIME)
 
+    def onActivated(self, snumber):
+        try:
+            settings.ROWS = int(snumber)
+            settings.COLS = int(snumber)
 
+            self.graphicsView.viewport().update()
+            set_img_numbers(self, list(range(1, settings.ROWS * settings.COLS + 1, 1)))
+        except Exception as e:
+            print(e)
 
     # заготовка на будущее?
     '''
