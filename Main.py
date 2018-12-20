@@ -2,17 +2,14 @@ from PyQt5.QtGui import QTransform
 from Stopwatch import *
 from View import *
 
+import settings
+
 class MainWnd(QWidget):
+
 
     def __init__(self):
         super().__init__()
-        self.COLS = 3
-        self.ROWS = 3
-        self.MARGIN = 40
-        # размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
-        self.XYSIDE = 60
-        # это отступ для второго поля
-        self.MARGIN2 = 400
+
         #квадраты на сцене
         self.squares = []
         #ответ пользователя
@@ -20,17 +17,17 @@ class MainWnd(QWidget):
         # правильный ответ
         self.true_ans = []
         #время на запоминание
-        self.TIME = 10
+
         #инициализацият кнопок ,отвёрток ,шестерёнок usw.
         initUI(self)
-        self.stopWatch = Stopwatch(self.TIME, self.btn_start_game, self.label_timer,self.label,self)
+        self.stopWatch = Stopwatch(settings.TIME, self.btn_start_game, self.label_timer,self.label,self)
     #функция кнопки "подтвердить"
     def confirm(self):
         self.ans = []
-        for y in range(0, self.COLS ):
-            for x in range(0, self.ROWS):
-                y_cord = self.MARGIN + self.XYSIDE * y + 1
-                x_cord = self.MARGIN + self.MARGIN2 + self.XYSIDE * x + 1
+        for y in range(0, settings.COLS ):
+            for x in range(0, settings.ROWS):
+                y_cord = settings.MARGIN + settings.XYSIDE * y + 1
+                x_cord = settings.MARGIN + settings.MARGIN2 + settings.XYSIDE * x + 1
                 #print(x_cord,y_cord)
                 u = -1
                 #если вдруг пустая ячейка в поле...
@@ -48,8 +45,11 @@ class MainWnd(QWidget):
             self.label.setText("<font color='red'>Неверно!</font>")
         self.btn_start_game.setEnabled(True)
         self.btn_confirm.setEnabled(False)
+        self.btn_change_time.setEnabled(True)
 
     def start_game(self):
+        self.btn_change_time.setEnabled(False)
+        print(settings.TIME)
         self.shuffle()
         text2 = 'Запоминайте расположение квадратов'
         self.squares_movable(0)
@@ -61,7 +61,7 @@ class MainWnd(QWidget):
 
     def shuffle(self):
         print('я начинаю мешать')
-        numbers = [i for i in range(1, self.ROWS * self.COLS + 1, 1)]
+        numbers = [i for i in range(1, settings.ROWS * settings.COLS + 1, 1)]
         random.shuffle(numbers)
         self.true_ans = numbers
         set_img_numbers(self, numbers)
@@ -70,6 +70,22 @@ class MainWnd(QWidget):
         for elem in self.squares:
             elem.setFlag(QGraphicsItem.ItemIsMovable, bool)
             elem.setFlag(QGraphicsItem.ItemIsSelectable, bool)
+
+    def change_time(self):
+        try:
+            t = int(self.lineEdit_time.text())
+            '''
+            self.stopWatch.sec = settings.TIME
+            self.stopWatch.set_settings.TIME()
+            '''
+            settings.TIME = t
+            self.stopWatch.reset()
+        except Exception as e:
+            print(e)
+            return
+        #print(settings.TIME)
+
+
 
     # заготовка на будущее?
     '''
@@ -94,6 +110,9 @@ class MainWnd(QWidget):
             self.animation.start()
             
     '''
+
+def get_TIME(self):
+    return settings.TIME
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

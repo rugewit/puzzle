@@ -1,18 +1,15 @@
 from View import *
+import settings
+
+
+
+
 
 class Stopwatch():
     def __init__(self,t,btn_start_game,label_timer,label,win):
-        self.COLS = win.COLS
-        self.ROWS = win.ROWS
-        self.MARGIN = win.MARGIN
-        # размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
-        self.XYSIDE = win.XYSIDE
-        # это отступ для второго поля
-        self.MARGIN2 = win.MARGIN2
-        self.TIME = t
         self.btn_start_game = btn_start_game
         self.label_timer = label_timer
-        self.sec = self.TIME
+        #settings.CUR_TIME = settings.TIME
         self.timer = QTimer()
         self.timer.timeout.connect(self.counter)
         self.set_time()
@@ -34,16 +31,16 @@ class Stopwatch():
 
     def reset(self):
         self.timer.stop()
-        self.sec = self.TIME
+        settings.CUR_TIME = settings.TIME
 
         self.set_time()
 
     def counter(self):
-        self.sec -= 1
+        settings.CUR_TIME -= 1
         self.set_time()
-        if self.sec == 0 and self.part_one:
+        if settings.CUR_TIME == 0 and self.part_one:
             self.end_part_one()
-        elif self.sec == 0 and self.part_two:
+        elif settings.CUR_TIME == 0 and self.part_two:
             self.reset()
 
     def is_timer_active(self):
@@ -53,7 +50,7 @@ class Stopwatch():
         try:
             self.label.setText('Теперь попробуйте восстановить расположение квадратов и нажмите на "подтвердить"')
             self.reset()
-            set_img_numbers(self.win,list(range(1, self.ROWS * self.COLS + 1, 1)))
+            set_img_numbers(self.win,list(range(1, settings.COLS * settings.COLS + 1, 1)))
             self.win.squares_movable(True)
             self.win.btn_confirm.setEnabled(True)
         except Exception as e:
@@ -65,8 +62,8 @@ class Stopwatch():
 
 
     def set_time(self):
-        #hora = self.sec / 3600
-        minutos = (self.sec % 3600) / 60
-        segundos = (self.sec % 3600) % 60
+        #hora = settings.CUR_TIME / 3600
+        minutos = (settings.CUR_TIME % 3600) / 60
+        segundos = (settings.CUR_TIME % 3600) % 60
         self.text = '<html><head/><body><p align="center"><span style=" font-size:48pt;">{}</span></p></body></html>'.format("%02d:%02d" % (minutos, segundos))
         self.label_timer.setText(self.text)

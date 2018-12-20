@@ -16,7 +16,7 @@ import sys
 # qwe
 from PyQt5.uic.properties import QtGui
 from Square import *
-
+import settings
 
 
 # квадратик ( элемент пазла ,мб в будущем переделан в прямоугольничек ,который не квадратик )
@@ -26,21 +26,14 @@ class Scene(QGraphicsScene):
     def __init__(self,win):
         super().__init__()
         self.setSceneRect(0, 0, 700, 500)
-        self.COLS = win.COLS
-        self.ROWS = win.ROWS
-        self.MARGIN = win.MARGIN
-        # размер квадратика (мб потом станет прямоугольничком ,который не квадратик )
-        self.XYSIDE = win.XYSIDE
-        # это отступ для второго поля
-        self.MARGIN2 = win.MARGIN2
 
     # отрисовывать поле
     def drawSquare(self, painter, x0, y0):
         try:
-            for x in range(self.COLS + 1):
-                painter.drawLine(x0 + x * self.XYSIDE, y0, x0 + x * self.XYSIDE, y0 + self.XYSIDE * self.ROWS)
-            for y in range(self.ROWS + 1):
-                painter.drawLine(x0, y0 + y * self.XYSIDE, x0 + self.XYSIDE * self.COLS, y0 + y * self.XYSIDE)
+            for x in range(settings.COLS + 1):
+                painter.drawLine(x0 + x * settings.XYSIDE, y0, x0 + x * settings.XYSIDE, y0 + settings.XYSIDE * settings.ROWS)
+            for y in range(settings.ROWS + 1):
+                painter.drawLine(x0, y0 + y * settings.XYSIDE, x0 + settings.XYSIDE * settings.COLS, y0 + y * settings.XYSIDE)
         except Exception as e:
             print(e)
 
@@ -48,8 +41,8 @@ class Scene(QGraphicsScene):
         try:
             super().drawBackground(painter, rect)
             # отрисовываем 2 поля
-            self.drawSquare(painter, self.MARGIN, self.MARGIN)
-            self.drawSquare(painter, self.MARGIN + self.MARGIN2, self.MARGIN)
+            self.drawSquare(painter, settings.MARGIN, settings.MARGIN)
+            self.drawSquare(painter, settings.MARGIN + settings.MARGIN2, settings.MARGIN)
         except Exception as e:
             print(e)
 
@@ -68,7 +61,9 @@ def initUI(self):
     self.btn_start_game.clicked.connect(self.start_game)
     self.btn_confirm.clicked.connect(self.confirm)
     self.btn_confirm.setEnabled(False)
-    text1 = 'После нажатия на кнопку "играем!" у вас будет {} секунд на то ,чтобы запомнить расположение квадратов.'.format(self.TIME)
+    #self.lineEdit_time[str].connect(self.change_time)
+    self.btn_change_time.clicked.connect(self.change_time)
+    text1 = 'После нажатия на кнопку "играем!" у вас будет {} секунд на то ,чтобы запомнить расположение квадратов.'.format(settings.TIME)
     self.label = QLabel()
     #автопереносы
     self.label.setWordWrap(True)
@@ -76,8 +71,8 @@ def initUI(self):
     self.label.setFont(QFont("monospace", 18))
     self.label.setText(text1)
     self.label.setStyleSheet("QLabel { background-color : white}")
-    self.scene.addWidget(self.label).setGeometry(QRectF(50, self.MARGIN + self.XYSIDE * self.ROWS+2, 600, 200))
-    set_img_numbers(self, list(range(1, self.ROWS * self.COLS + 1, 1)))
+    self.scene.addWidget(self.label).setGeometry(QRectF(50, settings.MARGIN + settings.XYSIDE * settings.ROWS+2, 600, 200))
+    set_img_numbers(self, list(range(1, settings.ROWS * settings.COLS + 1, 1)))
     # self.shuffle()
 
 #установить квадраты с числами
@@ -87,9 +82,9 @@ def set_img_numbers(self, numbers):
             self.scene.removeItem(elem)
     self.squares.clear()
     u = 0
-    for y in range(self.COLS):
-        for x in range(self.ROWS):
-            obj = Square(x * self.XYSIDE, y * self.XYSIDE, numbers[u], self)
+    for y in range(settings.COLS):
+        for x in range(settings.ROWS):
+            obj = Square(x * settings.XYSIDE, y * settings.XYSIDE, numbers[u], self)
             self.scene.addItem(obj)
             self.squares.append(obj)
             u += 1
