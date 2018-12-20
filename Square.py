@@ -27,7 +27,7 @@ class Square (QGraphicsRectItem):
     def paint(self, painter, option, widget):
         super().paint(painter, option, widget)
         painter.setFont(QFont("Roboto", 30))
-        painter.fillRect(QRectF(1, 1, settings.XYSIDE - 1, settings.XYSIDE - 1), QColor("red"))
+        painter.fillRect(QRectF(1, 1, settings.XYSIDE - 1, settings.XYSIDE - 1), QColor("grey"))
         painter.drawText(QRectF(1, 1, settings.XYSIDE - 1, settings.XYSIDE - 1), str(self.number), QTextOption(Qt.AlignmentFlag.AlignCenter))
 
     def mousePressEvent(self, event):
